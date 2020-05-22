@@ -195,7 +195,7 @@ public abstract class RelicSelectScreen implements RenderSubscriber, PreUpdateSu
 	 */
 	public RelicSelectScreen(Collection<? extends AbstractRelic> c, boolean canSkip, String bDesc, String title, String desc, boolean autoSort, int amountToSelect, boolean anyNum) {
 		this.scrollBar = new ScrollBar(this);
-		this.button = new ConfirmButton("跳过");
+		this.button = new ConfirmButton("Skip");
 		this.button.isDisabled = !canSkip;
 		this.setDescription(bDesc, title, desc);
 		if (c != null)
@@ -209,9 +209,9 @@ public abstract class RelicSelectScreen implements RenderSubscriber, PreUpdateSu
 	
 	/**
 	 * 设置窗口的提示信息
-	 * @param bDesc 在选择界面下方的小字提醒
-	 * @param title 遗物列表的标题
-	 * @param desc 遗物列表的描述
+	 * @param bDesc 在选择界面下方的小字提醒 bottom prompt
+	 * @param title 遗物列表的标题 relic list title
+	 * @param desc 遗物列表的描述 relic list description
 	 */
 	public void setDescription(String bDesc, String title, String desc) {
 		if (bDesc != null)
@@ -224,6 +224,7 @@ public abstract class RelicSelectScreen implements RenderSubscriber, PreUpdateSu
 	
 	/**
 	 * 开启当前选择窗口，可以在子类的构造方法的最后调用来达到自动开启的效果
+	 * Open current relic select screen. Can be called at the end of consructor of subclasses.
 	 */
 	public static void openScreen() {
 		screen.open();
@@ -231,6 +232,7 @@ public abstract class RelicSelectScreen implements RenderSubscriber, PreUpdateSu
 	
 	/**
 	 * 开启选择窗口，可以在子类的构造方法的最后调用来达到自动开启的效果，也可以在构造方法后直接调用
+	 * Open relic select screen. Can be called at the end of consructor of subclasses. Can also be called just after you create a new instance.
 	 */
 	public void open() {
 		this.isOpen = true;
@@ -245,40 +247,48 @@ public abstract class RelicSelectScreen implements RenderSubscriber, PreUpdateSu
 
 	/**
 	 * 添加这个选遗物窗口里应该有的遗物
+	 * add relics that you want to select from
 	 */
 	protected abstract void addRelics();
 	
 	/**
 	 * 当选完遗物后执行
+	 * do something after you select a relic
 	 */
 	protected abstract void afterSelected();
 	
 	/**
 	 * 当取消选择后执行
+	 * do something after you cancel or skip whole select
 	 */
 	protected abstract void afterCanceled();
 	
 	/**
-	 * @param r 要进行分类的遗物
-	 * @return 分类名，将会用于显示，例如按稀有度分类，这里应该返回 "普通"、"罕见" 等字符串
+	 * @param r 要进行分类的遗物 the relic to categorize
+	 * @return 分类名，将会用于显示，例如按稀有度分类，这里应该返回 "普通"、"罕见" 等字符串 type name like "common", "uncommon"
 	 * 如果autoSort不会为true，此方法可以返回null
+	 * if autoSort would never be true, you can just write return null
 	 */
 	protected abstract String categoryOf(AbstractRelic r);
 	
 	/**
-	 * @param category 分类类别
-	 * @return 分类描述，会显示在分类名下方，例如 "极为少见的独特且强大的遗物。"
+	 * @param category 分类类别 the category name
+	 * @return 分类描述，会显示在分类名下方，例如 "极为少见的独特且强大的遗物。" description of the category
 	 * 如果autoSort不会为true，此方法可以返回null
+	 * if autoSort would never be true, you can just write return null
 	 */
 	protected abstract String descriptionOfCategory(String category);
 	
 	/**
-	 * 当选择完指定数量的遗物后执行
-	 * 如果指定选择数量为1，不会执行，此方法可以留空
+	 * 当选择完指定数量的遗物后执行 do something when you selected all the amount relics you could select
+	 * 如果指定选择数量为1，不会执行，此方法可以留空 if amount is designed to be 1, this method can be left empty
 	 */
 	protected void afterSelectedAll() {
 	}
 	
+	/**
+	 * sort the relic pool
+	 */
 	protected void sort() {
 		this.category.clear();
 		this.sortedRelics.clear();
@@ -349,7 +359,7 @@ public abstract class RelicSelectScreen implements RenderSubscriber, PreUpdateSu
 	}
 	
 	/**
-	 * 刷新显示
+	 * 刷新显示 update render
 	 */
 	private static void updateRender(SpriteBatch sb) {
 		if (screen != null && screen.isOpen) {
@@ -380,6 +390,7 @@ public abstract class RelicSelectScreen implements RenderSubscriber, PreUpdateSu
 	
 	/**
 	 * 如果屏幕处于打开状态，刷新鼠标点击选择、刷新屏幕
+	 * update screen
 	 */
 	private static void updateScreen() {
 		if (screen != null && screen.isOpen) {
