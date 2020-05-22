@@ -99,7 +99,7 @@ public abstract class RelicSelectScreen implements RenderSubscriber, PreUpdateSu
 	
 	/**
 	 * 在你的Mod主类里的receivePostInitialize()里调用此方法
-	 * Use this method in receivePostInitialize() in your mod's starter class.
+	 * YOU MUST CALL This Method in receivePostInitialize() in your mod's starter class.
 	 */
 	public static void initialize() {
 		new RelicSelectScreen(true, true) {
